@@ -1,0 +1,15 @@
+<!--
+<% if user_signed_in? %>
+    <% if current_user.already_liked?(a) %>
+        <%= link_to talk_answer_like_path(id: @talk.id, talk_id: @talk.id, answer_id: a.id), method: :delete, remote: true do %>
+            <i class="fas fa-star"></i>いいね<%= a.likes.count %>
+        <% end %>
+    <% else %>
+        <%= link_to talk_answer_likes_path(id: @talk.id, talk_id: @talk.id, answer_id: a.id), method: :post, remote: true do %>
+            <i class="far fa-star"></i>いいね<%= a.likes.count %>
+        <% end %>
+    <% end %>
+<% else %>
+    <i class="far fa-star"></i><%= a.likes.count %>
+<% end %>
+-->

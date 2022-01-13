@@ -1,0 +1,42 @@
+<h1>share hearts</h1>
+<%= button_to 'ログアウト', destroy_user_session_path, method: :delete %>
+<h3>お悩みを検索</h3>
+<%= form_tag({controller:"talks",action:"index"}, method: :get) do %>
+    <%= text_field_tag :search %>
+    <%= submit_tag '検索する' %>
+<% end %>
+<h1>お悩み一覧</h1>
+<%= link_to 'お悩みをシェアする', new_talk_path %>
+
+<% if user_signed_in? %>
+    <%= link_to "マイページへ", user_path(current_user.id) %>
+<% end %>
+<%= @talks.each do |t| %> 
+    <div>
+        <%= t.body %>
+        <%= t.created_at %>
+        <% if user_signed_in? %>
+            <% if current_user.already_empathied?(t) %>
+                <%= link_to talk_empathy_path(id: t.id, talk_id: t.id), method: :delete, remote: true do %>
+                    <i class="fas fa-heart"></i>共感<%= t.empathies.count %>
+                <% end %>
+            <% else%>
+                <%= link_to talk_empathies_path(id: t.id, talk_id: t.id), method: :post, remote: true do %>
+                    <i class="far fa-heart"></i>共感<%= t.empathies.count %>
+                <% end %>
+            <% end %>
+        <% else %>
+            <i class="far fa-heart"></i><%= t.empathies.count %>
+        <% end %>
+        <div id="empathies_buttons_<%= t.id %>">
+            <%= render partial: 'empathies/empathy', locals: {talk: t} %>
+        </div>
+        <br>
+        <%= link_to '詳細', talk_path(t.id) %>
+        <% if user_signed_in? && current_user.id == t.user_id %>
+        <!--ログイン済みユーザー、かつログインユーザーがそのtalkの投稿者だった場合に表示される部分-->
+            <%= link_to '編集', edit_talk_path(t.id) %>
+        <% end %>
+    </div>
+    <a href="/users/<%= t.user.id %>"><%= t.user.name %></a>
+<% end %>

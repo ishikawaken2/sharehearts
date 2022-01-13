@@ -1,0 +1,8 @@
+<h1>share hearts</h1>
+<%= form_for @talk do |f| %>
+    <div>
+        <%= f.label :お悩み内容 %>
+        <%= f.text_field :body,size: 140 %>
+    </div>
+    <%= f.submit "編集する" %>
+<% end %>
