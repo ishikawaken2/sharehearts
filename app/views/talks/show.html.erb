@@ -1,28 +1,25 @@
 <h1>share hearts</h1>
 <h1>詳細</h1>
-<div>
+<div class="talk">
     <p><%= @talk.body%></p>
     <p><%= @talk.created_at %></p>
-    <!--
     <% if user_signed_in? %>
         <% if current_user.already_empathied?(@talk) %>
-            <%= link_to talk_empathy_path(@talk), method: :delete, remote: true do %>
+            <%= link_to talk_empathy_path(@talk), method: :delete do %>
                 <i class="fas fa-heart"></i>共感<%= @talk.empathies.count %>
             <% end %>
         <% else%>
-            <%= link_to talk_empathies_path(@talk), method: :post, remote: true do %>
+            <%= link_to talk_empathies_path(@talk), method: :post do %>
                 <i class="far fa-heart"></i>共感<%= @talk.empathies.count %>
             <% end %>
         <% end %>
     <% else %>
         <i class="far fa-heart"></i><%= @talk.empathies.count %>
     <% end %>
-    <div class="empathies_buttons_<%= @talk.id %>">
-        <%= render 'empathies/empathy', talk: @talk%>
-    </div>
-    -->
 </div>
-<%= link_to "編集", edit_talk_path(@talk.id) %>
+<% if user_signed_in? && current_user.id == @talk.user_id %>
+    <%= link_to "編集", edit_talk_path(@talk.id) %>
+<% end %>
 <h2>共感したユーザー</h2>
 <% @talk.empathied_users.each do |user| %>
     <li><%= user.email %></li>
@@ -34,24 +31,20 @@
         <br>
         <%= a.body %>
     </div>
-    <!--
     <% if user_signed_in? %>
         <% if current_user.already_liked?(a) %>
-            <%= link_to talk_answer_like_path(id: @talk.id, talk_id: @talk.id, answer_id: a.id), method: :delete, remote: true do %>
+            <%= link_to talk_answer_like_path(id: @talk.id, talk_id: @talk.id, answer_id: a.id), method: :delete do %>
                 <i class="fas fa-star"></i>いいね<%= a.likes.count %>
             <% end %>
         <% else %>
-            <%= link_to talk_answer_likes_path(id: @talk.id, talk_id: @talk.id, answer_id: a.id), method: :post, remote: true do %>
+            <%= link_to talk_answer_likes_path(id: @talk.id, talk_id: @talk.id, answer_id: a.id), method: :post do %>
+            <!-- talk_answer_likes POST   /talks/:talk_id/answers/:answer_id/likes(.:format) -->
                 <i class="far fa-star"></i>いいね<%= a.likes.count %>
             <% end %>
         <% end %>
     <% else %>
             <i class="far fa-star"></i><%= a.likes.count %>
     <% end %>
-    <div class="likes_buttons_<%= a.id %>">
-        <%= render 'likes/like', answer: a%>
-    </div>
-    -->
     <br>
 <% end %>
 <% if user_signed_in? %>
@@ -62,7 +55,10 @@
         <% end %>
     <% end %>
 <% end %>
-
+<%= link_to '編集', edit＿talk_answer_path(id: @talk.id, talk_id: @talk.id ,answer_id: @answers.id) %>
+<!-- edit_talk_answer GET    /talks/:talk_id/answers/:id/edit(.:format) -->
+<!-- edit_talk GET    /talks/:id/edit(.:format) -->
+<%= button_to '削除', talk_answer_path(id: @talk.id, talk_id: @talk.id ,answer_id: @answers.id), method: :delete %>
 <h3>いいねしたユーザー</h3>
 <% @answer.liked_users.each do |user| %>
     <li><%= user.email %></li>

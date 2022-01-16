@@ -4,7 +4,7 @@ Rails.application.routes.draw do
   resources :users, only: [:show]
   resources :talks do
     resources :empathies, only: [:create, :destroy]
-    resources :answers, only: [:create, :destroy] do  
+    resources :answers, only: [:create, :destroy ,:edit ,:update] do  
       resources :likes, only: [:create, :destroy]
       # talk_answer_likes POST   /talks/:talk_id/answers/:answer_id/likes(.:format)   
       # talk_answer_like DELETE /talks/:talk_id/answers/:answer_id/likes/:id(.:format)     

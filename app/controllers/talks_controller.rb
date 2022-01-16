@@ -39,7 +39,7 @@ class TalksController < ApplicationController
     def update
         talk = Talk.find(params[:id])
         if  talk.update(talk_params)
-            redirect_to :action =>"show", :id =>talk.id
+            redirect_to :action =>"show", :id => talk.id
         else
             redirect_to :action =>"new"
         end
