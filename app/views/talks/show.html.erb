@@ -33,14 +33,14 @@
 
     </div>
     <% if user_signed_in? %>
-        <%= link_to '編集', edit_talk_answer_path(talk_id: a.talk_id , id: a.id) %>
+        <%= link_to '編集', edit_talk_answer_path(talk_id: a.talk_id, id: a.id) %>
         <%= button_to '削除', talk_answer_path(talk_id: a.talk_id , id: a.id), method: :delete %>
         <% if current_user.already_liked?(a) %>
-            <%= link_to talk_answer_like_path(id: @talk.id, talk_id: @talk.id, answer_id: a.id), method: :delete do %>
+            <%= link_to talk_answer_like_path(id: a.talk.id, talk_id: a.talk.id, answer_id: a.id), method: :delete do %>
                 <i class="fas fa-star"></i>いいね<%= a.likes.count %>
             <% end %>
         <% else %>
-            <%= link_to talk_answer_likes_path(id: @talk.id, talk_id: @talk.id, answer_id: a.id), method: :post do %>
+            <%= link_to talk_answer_likes_path(id: a.talk.id, talk_id: a.talk.id, answer_id: a.id), method: :post do %>
             <!-- talk_answer_likes POST   /talks/:talk_id/answers/:answer_id/likes(.:format) -->
                 <i class="far fa-star"></i>いいね<%= a.likes.count %>
             <% end %>
@@ -53,7 +53,7 @@
 
 <% if user_signed_in? %>
     <%= form_with(model: [@talk, @answer], local: true) do |f| %>
-        <%= f.text_area :body %>
+        <%= f.text_area :content %>
         <%= button_tag type: "submit" do %>
             <i></i>コメントする
         <% end %>

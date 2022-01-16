@@ -1,8 +1,8 @@
 <h1>share hearts</h1>
-<%= form_for @answer do |f| %>
+<%= form_for @answer, url: talk_answer_path do |f| %>
     <div>
         <%= f.label :コメント内容 %>
-        <%= f.text_field :body,size: 140 %>
+        <%= f.text_field :content, size: 140 %>
     </div>
     <%= f.submit "編集する" %>
 <% end %>

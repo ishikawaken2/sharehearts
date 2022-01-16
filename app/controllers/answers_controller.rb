@@ -14,17 +14,24 @@ class AnswersController < ApplicationController
     end
 
     def edit
-        @answer = Answer.find_by(talk_id: params[:talk_id],id: params[:id])
+        @answer = Answer.find_by(id: params[:id], talk_id: params[:talk_id])       
     end
 
     def update
-        answer = Answer.find_by(id: params[:id], talk_id: params[:talk_id] ,answer_id: params[:answer_id])
+        answer = Answer.find_by(id: params[:id], talk_id: params[:talk_id])
         if  answer.update(answer_params)
-            redirect_to :action =>"show", :id => talk.id, :talk_id => talk.id, :answer_id => answer.id
+            redirect_to talk_path(answer.talk_id)
         else
-            redirect_to :action =>"new"
+            redirect_to request.referer
         end
     end
+
+    def destroy
+        answer = Answer.find_by(id: params[:id], talk_id: params[:talk_id])
+        answer.destroy
+        redirect_to talk_path(params[:talk_id])
+    end
+    
 
     private
     def answer_params
