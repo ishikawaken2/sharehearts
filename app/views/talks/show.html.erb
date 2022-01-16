@@ -25,13 +25,16 @@
     <li><%= user.email %></li>
 <%end%>
 <p>コメント一覧</p>
-<%= @answers.each do |a| %>
+<% @answers.each do |a| %>
     <div>
         <%= a.user.email unless a.user.blank? %>
         <br>
-        <%= a.body %>
+        <%= a.content %>
+
     </div>
     <% if user_signed_in? %>
+        <%= link_to '編集', edit_talk_answer_path(talk_id: a.talk_id , id: a.id) %>
+        <%= button_to '削除', talk_answer_path(talk_id: a.talk_id , id: a.id), method: :delete %>
         <% if current_user.already_liked?(a) %>
             <%= link_to talk_answer_like_path(id: @talk.id, talk_id: @talk.id, answer_id: a.id), method: :delete do %>
                 <i class="fas fa-star"></i>いいね<%= a.likes.count %>
@@ -47,6 +50,7 @@
     <% end %>
     <br>
 <% end %>
+
 <% if user_signed_in? %>
     <%= form_with(model: [@talk, @answer], local: true) do |f| %>
         <%= f.text_area :body %>
@@ -55,10 +59,7 @@
         <% end %>
     <% end %>
 <% end %>
-<%= link_to '編集', edit＿talk_answer_path(id: @talk.id, talk_id: @talk.id ,answer_id: @answers.id) %>
-<!-- edit_talk_answer GET    /talks/:talk_id/answers/:id/edit(.:format) -->
-<!-- edit_talk GET    /talks/:id/edit(.:format) -->
-<%= button_to '削除', talk_answer_path(id: @talk.id, talk_id: @talk.id ,answer_id: @answers.id), method: :delete %>
+
 <h3>いいねしたユーザー</h3>
 <% @answer.liked_users.each do |user| %>
     <li><%= user.email %></li>

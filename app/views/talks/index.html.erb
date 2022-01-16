@@ -11,7 +11,8 @@
 <% if user_signed_in? %>
     <%= link_to "マイページへ", user_path(current_user.id) %>
 <% end %>
-<%= @talks.each do |t| %> 
+
+<% @talks.each do |t| %> 
     <div class="talk">
         <%= t.body %>
         <%= t.created_at %>

@@ -10,36 +10,41 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_12_24_062449) do
+ActiveRecord::Schema.define(version: 2021_12_14_173905) do
 
   create_table "answers", force: :cascade do |t|
-    t.integer "talk_id"
-    t.text "body"
+    t.text "content"
+    t.integer "user_id", null: false
+    t.integer "talk_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.integer "user_id"
+    t.index ["talk_id"], name: "index_answers_on_talk_id"
+    t.index ["user_id"], name: "index_answers_on_user_id"
   end
 
   create_table "empathies", force: :cascade do |t|
-    t.integer "talk_id"
+    t.integer "talk_id", null: false
+    t.integer "user_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.integer "user_id"
+    t.index ["talk_id"], name: "index_empathies_on_talk_id"
+    t.index ["user_id"], name: "index_empathies_on_user_id"
   end
 
   create_table "likes", force: :cascade do |t|
+    t.integer "talk_id"
     t.integer "answer_id"
+    t.integer "user_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.integer "talk_id"
-    t.integer "user_id"
+    t.index ["user_id"], name: "index_likes_on_user_id"
   end
 
   create_table "talks", force: :cascade do |t|
     t.text "body"
+    t.integer "user_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.integer "user_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -48,12 +53,17 @@ ActiveRecord::Schema.define(version: 2021_12_24_062449) do
     t.string "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
+    t.text "profile"
+    t.string "name"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.string "name"
-    t.text "profile"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "answers", "talks"
+  add_foreign_key "answers", "users"
+  add_foreign_key "empathies", "talks"
+  add_foreign_key "empathies", "users"
+  add_foreign_key "likes", "users"
 end

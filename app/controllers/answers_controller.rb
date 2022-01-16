@@ -14,11 +14,11 @@ class AnswersController < ApplicationController
     end
 
     def edit
-        @answer = Answer.find_by(id: params[:id] talk_id: params[:talk_id] ,answer_id: params[:answer_id])
+        @answer = Answer.find_by(talk_id: params[:talk_id],id: params[:id])
     end
 
     def update
-        answer = Answer.find_by(id: params[:id] talk_id: params[:talk_id] ,answer_id: params[:answer_id])
+        answer = Answer.find_by(id: params[:id], talk_id: params[:talk_id] ,answer_id: params[:answer_id])
         if  answer.update(answer_params)
             redirect_to :action =>"show", :id => talk.id, :talk_id => talk.id, :answer_id => answer.id
         else
@@ -28,6 +28,6 @@ class AnswersController < ApplicationController
 
     private
     def answer_params
-        params.require(:answer).permit(:body)
+        params.require(:answer).permit(:content)
     end
 end
